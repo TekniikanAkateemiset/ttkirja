@@ -1,0 +1,9 @@
+# Ignore Drupal's file directory
+shared/files
+src/web/sites/all/files
+*.sql
+*.swp
+*.swo
+
+.idea
+.git
