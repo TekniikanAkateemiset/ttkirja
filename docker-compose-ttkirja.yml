@@ -3,12 +3,12 @@ version: '3.3'
 services:
 
   wordpress:
-#    image: wordpress:4-php7.1-fpm-alpine
     image: teknakat/ttkirja
     volumes:
       - type: volume
+#        source: ttkirja-webroot
         source: ttkirja-webroot-stage
-        target: /var/www/html
+        target: /usr/src/wordpress
         volume:
           nocopy: true
     networks:
@@ -17,7 +17,7 @@ services:
     environment:
       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/ttkirja_mysql_pwd
       WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_USER: wp4ttkirja
       WORDPRESS_DB_NAME: wp4ttkirja
     secrets:
       - ttkirja_mysql_pwd
@@ -27,10 +27,12 @@ services:
         - com.df.notify=true
         - com.df.distribute=true
         - com.df.serviceDomain=ttkirjatest.tek.fi
+#        - com.df.serviceDomain=teekkarintyokirja.tek.fi
         - com.df.port=8005
-        - com.df.httpsOnly=true
-        - com.df.redirectFromDomain=teekkarintyokirja.fi,www.teekkarintyokirja.fi
+        - com.df.httpsOnly=false
+#        - com.df.redirectFromDomain=teekkarintyokirja.fi,www.teekkarintyokirja.fi
       placement:
+#        constraints: [node.hostname == dca.tek.fi]
         constraints: [node.hostname == dcatest]
 
 networks:
@@ -41,6 +43,7 @@ networks:
 
 volumes:
   ttkirja-webroot-stage:
+#  ttkirja-webroot:
     external: true
 
 secrets:
